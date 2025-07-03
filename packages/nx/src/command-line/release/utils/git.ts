@@ -89,9 +89,8 @@ export function extractTagAndVersion(tag: string, tagRegexp: string): GitTagAndV
  * This function will:
  * - Get all tags from the git repo, sorted by version
  * - Filter the tags into a list with SEMVER-compliant tags, matching the release tag pattern
- * - If a preid is provided, prioritise tags for that preid
- * - If no preid is provided, prioritise stable semver tags (i.e. no pre-release or build metadata)
- * - If no stable semver tags are found, prioritise the highest version tag (i.e. any pre-release tag)
+ * - If a preid is provided, prioritise tags for that preid, then semver tags without a preid
+ * - If no preid is provided, search only for stable semver tags (i.e. no pre-release or build metadata)
  * 
  * @param releaseTagPattern - The pattern to filter the tags list by
  * @param additionalInterpolationData - Additional data used when interpolating the release tag pattern
@@ -235,8 +234,8 @@ export async function getLatestGitTagForPattern(
       return extractTagAndVersion(stableReleaseTags[0], tagRegexp);
     }
 
-    // Otherwise use the highest version tag (i.e. any pre-release tag)
-    return extractTagAndVersion(matchingSemverTags[0], tagRegexp);
+    // Otherwise return null
+    return null;
   } catch {
     return null;
   }

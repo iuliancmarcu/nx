@@ -21,6 +21,7 @@ my-lib-4@1.2.4-alpha.1
 my-lib-4@1.2.3
 alpha-lib@1.2.4
 alpha-lib@1.2.4-beta.1
+lib-only-pre-release@1.2.4-beta.1
 `)
   ),
 }));
@@ -234,6 +235,25 @@ See merge request nx-release-test/nx-release-test!2`,
       expectedTag: 'my-lib-4@1.2.3',
       expectedVersion: '1.2.3',
     },
+    {
+      pattern: '{projectName}@{version}',
+      projectName: 'lib-no-tags',
+      expectedTag: undefined,
+      expectedVersion: undefined,
+    },
+    {
+      pattern: '{projectName}@{version}',
+      projectName: 'lib-only-pre-release',
+      expectedTag: undefined,
+      expectedVersion: undefined,
+    },
+    {
+      pattern: '{projectName}@{version}',
+      projectName: 'lib-only-pre-release',
+      expectedTag: 'lib-only-pre-release@1.2.4-beta.1',
+      expectedVersion: '1.2.4-beta.1',
+      preId: 'beta',
+    },
   ];
 
   describe('getLatestGitTagForPattern', () => {
@@ -250,8 +270,8 @@ See merge request nx-release-test/nx-release-test!2`,
           preId,
         });
 
-        expect(result.tag).toEqual(expectedTag);
-        expect(result.extractedVersion).toEqual(expectedVersion);
+        expect(result?.tag).toEqual(expectedTag);
+        expect(result?.extractedVersion).toEqual(expectedVersion);
       }
     );
 
